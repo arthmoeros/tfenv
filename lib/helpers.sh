@@ -68,6 +68,11 @@ resolve_version () {
     version_requested="${arg}";
   fi;
 
+  # Support for short version of latest
+  if [[ "${version_requested}" =~ ^\:.*$ ]]; then
+    version_requested="latest${version_requested}"
+  fi
+
   log 'debug' "Version Requested: ${version_requested}";
 
   if [[ "${version_requested}" =~ ^min-required$ ]]; then
@@ -78,11 +83,6 @@ resolve_version () {
     log 'info' "Minimum required version detected: ${min_required}";
     version_requested="${min_required}";
   fi;
-
-  # Support for short version of latest
-  if [[ "${version_requested}" =~ ^\:.*$ ]]; then
-    version_requested="latest${version_requested}"
-  fi
 
   if [[ "${version_requested}" =~ ^latest\:.*$ ]]; then
     version="${version_requested%%\:*}";
